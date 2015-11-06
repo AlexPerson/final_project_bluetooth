@@ -51,8 +51,8 @@
 
 #import "BTLECentralViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
-
 #import "TransferService.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface BTLECentralViewController () <CBCentralManagerDelegate, CBPeripheralDelegate>
 
@@ -61,17 +61,17 @@
 @property (strong, nonatomic) CBPeripheral          *discoveredPeripheral;
 @property (strong, nonatomic) NSMutableData         *data;
 @property(readonly) CBPeripheralState state;
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+@property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
+
 
 @end
-
 
 
 @implementation BTLECentralViewController
 
 
-
 #pragma mark - View Lifecycle
-
 
 
 - (void)viewDidLoad
@@ -84,10 +84,48 @@
     // And somewhere to store the incoming data
     _data = [[NSMutableData alloc] init];
     NSLog(@"Centralviewcontroller loaded");
+    [self setupAudio];
+}
+
+- (void) setupAudio {
+    NSError *error;
+    [[AVAudioSession sharedInstance] setActive:YES error:&error];
+    if (error != nil) {
+        NSAssert(error ==nil, @"");
+    }
+    
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+    if (error != nil) {
+        NSAssert(error ==nil, @"");
+    }
+    
+    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
+                                              withExtension:@"mp3"];
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:&error];
+    if (error != nil) {
+        NSAssert(error ==nil, @"");
+    }
+    
+    [self.audioPlayer setVolume:self.volumeSlider.value];
+    [self.audioPlayer prepareToPlay];
+    
 }
 
 
+- (IBAction)playButtonPressed:(id)sender {
+    BOOL played = [self.audioPlayer play];
+    if (!played) {
+        NSLog(@"Error");
+    }
+}
 
+- (IBAction)stopButtonPressed:(id)sender {
+    [self.audioPlayer stop];
+}
+
+- (IBAction)volumeSliderChanged:(UISlider*)sender {
+    [self.audioPlayer setVolume:sender.value];
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
