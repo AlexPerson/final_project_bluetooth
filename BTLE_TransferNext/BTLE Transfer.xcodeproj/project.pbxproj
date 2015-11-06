@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11E0596D1BECD21D0076FFF6 /* courses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 11E0596C1BECD21D0076FFF6 /* courses.plist */; };
 		B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */; };
 		B92B557315E453690036A8A2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557215E453690036A8A2 /* Icon-57.png */; };
 		B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557415E4536C0036A8A2 /* Icon-114.png */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11E0596C1BECD21D0076FFF6 /* courses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = courses.plist; sourceTree = "<group>"; };
 		B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		B92B557215E453690036A8A2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-57.png"; path = "../Icon-57.png"; sourceTree = "<group>"; };
 		B92B557415E4536C0036A8A2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-114.png"; path = "../Icon-114.png"; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				B92B557215E453690036A8A2 /* Icon-57.png */,
 				B9F9162115D5806400B3B398 /* BTLE Transfer-Info.plist */,
 				B9F9162215D5806400B3B398 /* InfoPlist.strings */,
+				11E0596C1BECD21D0076FFF6 /* courses.plist */,
 				B9F9162515D5806400B3B398 /* main.m */,
 				B9F9162715D5806400B3B398 /* BTLE Transfer-Prefix.pch */,
 			);
@@ -205,6 +208,7 @@
 				B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */,
 				B92B557715E4541E0036A8A2 /* Icon-72.png in Resources */,
 				B92B557915E4545B0036A8A2 /* Icon-144.png in Resources */,
+				11E0596D1BECD21D0076FFF6 /* courses.plist in Resources */,
 				B92B557F15E457480036A8A2 /* Default-Portrait@2x~ipad.png in Resources */,
 				B92B558115E4574D0036A8A2 /* Default-Portrait~ipad.png in Resources */,
 				B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */,

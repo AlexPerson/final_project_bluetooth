@@ -66,13 +66,31 @@
 
 
 
-@implementation BTLECentralViewController
+@implementation BTLECentralViewController {
+
+    NSDictionary *courseDetails;
+    NSArray *justCourseNames;
+}
 
 
+
+//- tableView:cellForRowAtIndexPath:
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return courseDetails.count;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    
+    cell.textLabel.text = justCourseNames[indexPath.row];
+    
+    return cell;
+    
+}
 
 #pragma mark - View Lifecycle
-
-
 
 - (void)viewDidLoad
 {
@@ -84,6 +102,11 @@
     // And somewhere to store the incoming data
     _data = [[NSMutableData alloc] init];
     NSLog(@"Centralviewcontroller loaded");
+    
+    //Added by Joe and Alex from tableview tutorial
+    NSURL * url = [[NSBundle mainBundle] URLForResource:@"courses" withExtension:@"plist"];
+    courseDetails = [NSDictionary dictionaryWithContentsOfURL:url];
+    justCourseNames = courseDetails.allKeys;
 }
 
 
