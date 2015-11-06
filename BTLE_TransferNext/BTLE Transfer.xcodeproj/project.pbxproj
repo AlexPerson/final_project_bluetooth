@@ -179,7 +179,7 @@
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					B9F9161415D5806400B3B398 = {
-						DevelopmentTeam = B949PC28JZ;
+						DevelopmentTeam = 86KZ389579;
 					};
 				};
 			};
@@ -325,7 +325,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTLE Transfer/BTLE Transfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/BTLE Transfer/BTLE Transfer-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.donmatta.nexttest;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.blue-buddies.nexttest";
 				PRODUCT_NAME = "BTLE Transfer";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -343,7 +343,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTLE Transfer/BTLE Transfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/BTLE Transfer/BTLE Transfer-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.donmatta.nexttest;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.blue-buddies.nexttest";
 				PRODUCT_NAME = "BTLE Transfer";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;

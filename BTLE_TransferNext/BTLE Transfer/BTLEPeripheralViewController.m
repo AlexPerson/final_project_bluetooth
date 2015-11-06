@@ -53,6 +53,7 @@
 #import "BTLEPeripheralViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "TransferService.h"
+#import <AVFoundation/AVFoundation.h>
 
 
 @interface BTLEPeripheralViewController () <CBPeripheralManagerDelegate, UITextViewDelegate>
@@ -62,6 +63,9 @@
 @property (strong, nonatomic) CBMutableCharacteristic   *transferCharacteristic;
 @property (strong, nonatomic) NSData                    *dataToSend;
 @property (nonatomic, readwrite) NSInteger              sendDataIndex;
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+@property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
+@property (strong, nonatomic) NSData *musicData;
 @end
 
 
@@ -85,7 +89,53 @@
     // Start up the CBPeripheralManager
     _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     NSLog(@"Peripherial viewcontroller loaded");
+    [self setupAudio];
 }
+
+- (void) setupAudio {
+    NSError *error;
+    [[AVAudioSession sharedInstance] setActive:YES error:&error];
+    if (error != nil) {
+        NSAssert(error ==nil, @"");
+    }
+    
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+    if (error != nil) {
+        NSAssert(error ==nil, @"");
+    }
+    
+    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
+                                              withExtension:@"mp3"];
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:&error];
+    if (error != nil) {
+        NSAssert(error ==nil, @"");
+    }
+    
+    [self.audioPlayer setVolume:self.volumeSlider.value];
+    [self.audioPlayer prepareToPlay];
+    
+}
+
+
+- (IBAction)playButtonPressed:(id)sender {
+    BOOL played = [self.audioPlayer play];
+    if (!played) {
+        NSLog(@"Error");
+    }
+    NSString * musicPath = [[NSBundle mainBundle] pathForResource:@"SoManyTimes" ofType:@"mp3"];
+    self.musicData = [NSData dataWithContentsOfFile:musicPath];
+    _dataToSend = _musicData;
+    [self sendData];
+}
+
+- (IBAction)stopButtonPressed:(id)sender {
+    [self.audioPlayer stop];
+}
+
+- (IBAction)volumeSliderChanged:(UISlider*)sender {
+    [self.audioPlayer setVolume:sender.value];
+}
+
 
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -142,13 +192,13 @@
     NSLog(@"Central subscribed to characteristic");
     
     // Get the data
-    self.dataToSend = [self.textView.text dataUsingEncoding:NSUTF8StringEncoding];
-    
+//    self.dataToSend = [self.textView.text dataUsingEncoding:NSUTF8StringEncoding];
+    self.dataToSend = self.musicData;
     // Reset the index
     self.sendDataIndex = 0;
     
     // Start sending
-    [self sendData];
+//    [self sendData];
 }
 
 

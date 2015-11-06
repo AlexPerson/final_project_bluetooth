@@ -84,7 +84,7 @@
     // And somewhere to store the incoming data
     _data = [[NSMutableData alloc] init];
     NSLog(@"Centralviewcontroller loaded");
-    [self setupAudio];
+//    [self setupAudio];
 }
 
 - (void) setupAudio {
@@ -99,9 +99,9 @@
         NSAssert(error ==nil, @"");
     }
     
-    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
-                                              withExtension:@"mp3"];
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:&error];
+//    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
+//                                              withExtension:@"mp3"];
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.data error:&error];
     if (error != nil) {
         NSAssert(error ==nil, @"");
     }
@@ -292,7 +292,7 @@
     }
     
     NSString *stringFromData = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
-    
+    NSLog(@"data %i", self.data.length);
     // Have we got everything we need?
     if ([stringFromData isEqualToString:@"EOM"]) {
         NSLog(@"characteristic updated");
