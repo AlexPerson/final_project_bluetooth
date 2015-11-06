@@ -20,6 +20,7 @@
 
     NSDictionary *courseDetails;
     NSArray *justCourseNames;
+    NSMutableArray *peripheralList;
 }
 
 
@@ -141,11 +142,17 @@
     
     NSLog(@"Discovered %@ at %@", peripheral.name, RSSI);
     NSString *message = @"Discovered ";
-    message = [message stringByAppendingString:peripheral.name];
+//    message = [message stringByAppendingString:peripheral.name];
     message = [message stringByAppendingString:@" RSSI = "];
     NSString *rssi = [RSSI stringValue];
     message = [message stringByAppendingString:rssi];
     [self tLog: message];
+//    [self tLog: advertisementData[@"example key"]];
+    
+    NSLog(@"\r\n\r\n");
+    
+    NSLog(@"%@", advertisementData[CBAdvertisementDataServiceUUIDsKey]);
+    NSLog(@"%@", advertisementData[CBAdvertisementDataLocalNameKey]);
     
     // Ok, it's in range - have we already seen it?
     if (self.discoveredPeripheral != peripheral) {
@@ -253,7 +260,8 @@
     if ([stringFromData isEqualToString:@"EOM"]) {
         NSLog(@"characteristic updated");
         // We have, so show the data
-        [self.textview setText:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
+//        [self.textview setText:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
+        [self tLog:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
         
         // Cancel our subscription to the characteristic
         [peripheral setNotifyValue:NO forCharacteristic:characteristic];
