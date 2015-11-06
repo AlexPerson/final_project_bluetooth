@@ -10,6 +10,7 @@
 @property (strong, nonatomic) CBCentralManager      *centralManager;
 @property (strong, nonatomic) CBPeripheral          *discoveredPeripheral;
 @property (strong, nonatomic) NSMutableData         *data;
+@property (strong, nonatomic) NSMutableArray        *discoveredPeripheralsArray;
 @property(readonly) CBPeripheralState state;
 
 @end
@@ -64,6 +65,9 @@
     NSLog(@"Centralviewcontroller loaded");
     NSString * message = @"Centralviewcontroller loaded";
     [self tLog: message];
+    
+    //discovered peripherals initialize
+    _discoveredPeripheralsArray = [[NSMutableArray alloc]init];
     
     //Added by Joe and Alex from tableview tutorial
     NSURL * url = [[NSBundle mainBundle] URLForResource:@"courses" withExtension:@"plist"];
@@ -154,16 +158,35 @@
     NSLog(@"%@", advertisementData[CBAdvertisementDataServiceUUIDsKey]);
     NSLog(@"%@", advertisementData[CBAdvertisementDataLocalNameKey]);
     
-    // Ok, it's in range - have we already seen it?
-    if (self.discoveredPeripheral != peripheral) {
-        
-        // Save a local copy of the peripheral, so CoreBluetooth doesn't get rid of it
-        self.discoveredPeripheral = peripheral;
-        
-        // And connect
-        NSLog(@"Connecting to peripheral %@", peripheral);
-        [self.centralManager connectPeripheral:peripheral options:nil];
+    
+    if (![_discoveredPeripheralsArray containsObject:peripheral.name])
+    {
+        [_discoveredPeripheralsArray addObject: peripheral.name];
     }
+    
+    NSLog(@"\r\n\r\n");
+    NSLog(@"\r\n\r\n");
+
+    for(NSString * name in _discoveredPeripheralsArray)
+    {
+        NSLog(@"name is: %@", name);
+    }
+    NSLog(@"\r\n\r\n");
+    NSLog(@"\r\n\r\n");
+
+    
+//
+    
+//    // Ok, it's in range - have we already seen it?
+//    if (self.discoveredPeripheral != peripheral) {
+//        
+//        // Save a local copy of the peripheral, so CoreBluetooth doesn't get rid of it
+//        self.discoveredPeripheral = peripheral;
+//        
+//        // And connect
+//        NSLog(@"Connecting to peripheral %@", peripheral);
+//        [self.centralManager connectPeripheral:peripheral options:nil];
+//    }
 }
 
 
