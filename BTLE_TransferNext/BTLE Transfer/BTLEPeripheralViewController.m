@@ -178,10 +178,16 @@
     if (!played) {
         NSLog(@"Error");
     }
-    NSString * musicPath = [[NSBundle mainBundle] pathForResource:@"SoManyTimes" ofType:@"mp3"];
-    self.musicData = [NSData dataWithContentsOfFile:musicPath];
-    _dataToSend = _musicData;
+//    NSString * musicPath = [[NSBundle mainBundle] pathForResource:@"SoManyTimes" ofType:@"mp3"];
+//    self.musicData = [NSData dataWithContentsOfFile:musicPath];
+//    _dataToSend = _musicData;
+    NSLog(@"file url: %@", self.url);
+    self.musicData = [NSData dataWithContentsOfURL:self.url];
+    NSLog(@"musicData: %@", self.musicData);
+    _dataToSend = self.musicData;
+    NSLog(@"data to send, %@", _dataToSend);
     [self sendData];
+    NSLog(@"data sent");
 }
 
 - (IBAction)stopButtonPressed:(id)sender {
@@ -249,7 +255,7 @@
     
     // Get the data
 //    self.dataToSend = [self.textView.text dataUsingEncoding:NSUTF8StringEncoding];
-    self.dataToSend = self.musicData;
+//    self.dataToSend = self.musicData;
     // Reset the index
     self.sendDataIndex = 0;
     
@@ -362,7 +368,7 @@
 - (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral
 {
     // Start sending again
-    [self sendData];
+//    [self sendData];
 }
 
 

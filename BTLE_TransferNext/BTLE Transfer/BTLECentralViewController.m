@@ -292,6 +292,7 @@
     }
     
     NSString *stringFromData = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+    NSLog(@"Downloading file!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     NSLog(@"data %lu", (unsigned long)self.data.length);
     // Have we got everything we need?
     if ([stringFromData isEqualToString:@"EOM"]) {
