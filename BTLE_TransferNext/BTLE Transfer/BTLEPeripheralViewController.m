@@ -54,9 +54,10 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "TransferService.h"
 #import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MPMediaPickerController.h>
 
 
-@interface BTLEPeripheralViewController () <CBPeripheralManagerDelegate, UITextViewDelegate>
+@interface BTLEPeripheralViewController () <CBPeripheralManagerDelegate, UITextViewDelegate, MPMediaPickerControllerDelegate>
 @property (strong, nonatomic) IBOutlet UITextView       *textView;
 @property (strong, nonatomic) IBOutlet UISwitch         *advertisingSwitch;
 @property (strong, nonatomic) CBPeripheralManager       *peripheralManager;
@@ -90,6 +91,35 @@
     _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     NSLog(@"Peripherial viewcontroller loaded");
     [self setupAudio];
+}
+
+
+- (void) mediaPicker: (MPMediaPickerController *) mediaPicker
+   didPickMediaItems: (MPMediaItemCollection *) collection {
+    
+    [self dismissModalViewControllerAnimated: YES];
+    NSLog(@"Collection %@", collection);
+//    [self updatePlayerQueueWithMediaCollection: collection];
+}
+
+- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
+{
+    [self dismissModalViewControllerAnimated: YES];
+//      [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+
+}
+
+- (IBAction)showMediaPicker:(id)sender {
+    MPMediaPickerController *picker = [[MPMediaPickerController alloc]
+                                       initWithMediaTypes: MPMediaTypeAnyAudio];                   // 1
+    
+    [picker setDelegate: self];                                         // 2
+    [picker setAllowsPickingMultipleItems: YES];                        // 3
+    picker.prompt =
+    NSLocalizedString (@"Add songs to play",
+                       "Prompt in media item picker");
+    
+    [self presentModalViewController: picker animated: YES];    // 4
 }
 
 - (void) setupAudio {
@@ -343,6 +373,7 @@
     [self.textView resignFirstResponder];
     self.navigationItem.rightBarButtonItem = nil;
 }
+
 
 
 

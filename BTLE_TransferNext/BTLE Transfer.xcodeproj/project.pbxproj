@@ -10,6 +10,7 @@
 		001597801BECBFD400DB4587 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0015977F1BECBFD400DB4587 /* AVFoundation.framework */; };
 		001597811BECC2F800DB4587 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F9161B15D5806400B3B398 /* Foundation.framework */; };
 		001597831BECC52A00DB4587 /* SoManyTimes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 001597821BECC52A00DB4587 /* SoManyTimes.mp3 */; };
+		00E6CB841BECE7E500BD47C4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */; };
 		B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */; };
 		B92B557315E453690036A8A2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557215E453690036A8A2 /* Icon-57.png */; };
 		B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557415E4536C0036A8A2 /* Icon-114.png */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		0015977F1BECBFD400DB4587 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		001597821BECC52A00DB4587 /* SoManyTimes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SoManyTimes.mp3; sourceTree = "<group>"; };
+		00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		B92B557215E453690036A8A2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-57.png"; path = "../Icon-57.png"; sourceTree = "<group>"; };
 		B92B557415E4536C0036A8A2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-114.png"; path = "../Icon-114.png"; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00E6CB841BECE7E500BD47C4 /* MediaPlayer.framework in Frameworks */,
 				001597811BECC2F800DB4587 /* Foundation.framework in Frameworks */,
 				001597801BECBFD400DB4587 /* AVFoundation.framework in Frameworks */,
 				B92B559015E4621C0036A8A2 /* CoreBluetooth.framework in Frameworks */,
@@ -100,6 +103,7 @@
 		B9F9161815D5806400B3B398 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */,
 				0015977F1BECBFD400DB4587 /* AVFoundation.framework */,
 				B92B558F15E4621C0036A8A2 /* CoreBluetooth.framework */,
 				B9F9161915D5806400B3B398 /* UIKit.framework */,
@@ -175,7 +179,7 @@
 		B9F9160C15D5806400B3B398 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					B9F9161415D5806400B3B398 = {
@@ -287,6 +291,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
