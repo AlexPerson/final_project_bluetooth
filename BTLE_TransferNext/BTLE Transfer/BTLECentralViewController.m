@@ -7,6 +7,7 @@
 @interface BTLECentralViewController () <CBCentralManagerDelegate, CBPeripheralDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextView   *textview;
+@property (strong, nonatomic) IBOutlet UITableView  *tableview;
 @property (strong, nonatomic) CBCentralManager      *centralManager;
 @property (strong, nonatomic) CBPeripheral          *discoveredPeripheral;
 @property (strong, nonatomic) NSMutableData         *data;
@@ -22,6 +23,7 @@
     NSDictionary *courseDetails;
     NSArray *justCourseNames;
     NSMutableArray *peripheralList;
+    NSArray *testNames;
 }
 
 
@@ -38,15 +40,22 @@
 //- tableView:cellForRowAtIndexPath:
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return courseDetails.count;
+//    return courseDetails.count;
+    return _discoveredPeripheralsArray.count;
+//    return testNames.count;
+//    NSLog(@"Method 1 of table view called value is %ul",_discoveredPeripheralsArray.count);
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-    
-    cell.textLabel.text = justCourseNames[indexPath.row];
-    
+
+//      cell.textLabel.text = testNames[indexPath.row];
+//    cell.textLabel.text = justCourseNames[indexPath.row];
+
+    cell.textLabel.text = [_discoveredPeripheralsArray[indexPath.row] name];
+//    NSLog(@"Method 2 of table view called value is %@",[_discoveredPeripheralsArray[indexPath.row] name]);
+//    
     return cell;
     
 }
@@ -73,6 +82,7 @@
     NSURL * url = [[NSBundle mainBundle] URLForResource:@"courses" withExtension:@"plist"];
     courseDetails = [NSDictionary dictionaryWithContentsOfURL:url];
     justCourseNames = courseDetails.allKeys;
+    testNames = @[@"hello",@"world"];
 }
 
 
@@ -159,17 +169,21 @@
     NSLog(@"%@", advertisementData[CBAdvertisementDataLocalNameKey]);
     
     
-    if (![_discoveredPeripheralsArray containsObject:peripheral.name])
+    if (![_discoveredPeripheralsArray containsObject:peripheral])
     {
-        [_discoveredPeripheralsArray addObject: peripheral.name];
+        [_discoveredPeripheralsArray addObject: peripheral];
+        
+        testNames = @[@"reloaded",@"data",@"now!"];
+        
+        [self.tableview reloadData];
     }
     
     NSLog(@"\r\n\r\n");
     NSLog(@"\r\n\r\n");
 
-    for(NSString * name in _discoveredPeripheralsArray)
+    for(CBPeripheral * peripheral in _discoveredPeripheralsArray)
     {
-        NSLog(@"name is: %@", name);
+        NSLog(@"name is: %@", peripheral.name);
     }
     NSLog(@"\r\n\r\n");
     NSLog(@"\r\n\r\n");

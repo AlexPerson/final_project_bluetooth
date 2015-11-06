@@ -88,6 +88,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Central" id="qzP-bt-9oF"/>
                     <connections>
+                        <outlet property="tableview" destination="RAT-ol-kZ2" id="yEC-U9-HAO"/>
                         <outlet property="textview" destination="x8A-vY-Jwn" id="ag1-CZ-qwh"/>
                     </connections>
                 </viewController>
