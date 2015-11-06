@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>iOS App Dev Essential Training</key>
+	<string>Simon Allardice</string>
+	<key>iOS 7 SDK New Features</key>
+	<string>Simon Allardice</string>
+	<key>iOS SDK and SQLite: Building Data-Driven Apps</key>
+	<string>Bill Weinman</string>
+	<key>Objective-C Essential Training</key>
+	<string>Simon Allardice</string>
+	<key>iOS 4 Web Applications with HTML5 and CSS3</key>
+	<string>Ray Villalobos</string>
+	<key>Distributing iOS Applications Through the App Store</key>
+	<string>Bill Weinman</string>
+	<key>iOS 6 SDK New Features</key>
+	<string>Simon Allardice</string>
+	<key>iOS SDK: Building Apps with MapKit and Core Location</key>
+	<string>Veronique Brossier</string>
+	<key>Xcode 5 New Features</key>
+	<string>Bill Weinman</string>
+	<key>Building Android and iOS Apps with Dreamweaver CS5</key>
+	<string>Joseph Lowery</string>
+	<key>Building and Monetizing Game Apps for iOS</key>
+	<string>Todd Perkins</string>
+	<key>iOS 6: iOS System Resources</key>
+	<string>Bill Weinman</string>
+	<key>iOS 5 SDK New Features</key>
+	<string>Simon Allardice</string>
+	<key>Programming for Non-Programmers: iOS</key>
+	<string>Todd Perkins</string>
+	<key>Building a Note-Taking App for iOS</key>
+	<string>Todd Perkins</string>
+	<key>iPhone SDK: Developing iPad Applications</key>
+	<string>Simon Allardice</string>
+	<key>Developing for the Apple iCloud API with iOS</key>
+	<string>Todd Perkins</string>
+</dict>
+</plist>
