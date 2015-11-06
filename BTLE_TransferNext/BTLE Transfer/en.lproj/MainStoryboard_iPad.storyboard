@@ -74,7 +74,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Advertising" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sk-yR-N1o">
-                                <rect key="frame" x="244" y="365" width="171" height="20.5"/>
+                                <rect key="frame" x="244" y="365" width="171" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="171" id="OAB-Wx-Cyv"/>
                                 </constraints>
