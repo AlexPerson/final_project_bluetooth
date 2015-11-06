@@ -69,6 +69,7 @@
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 @property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
 @property (strong, nonatomic) NSData *musicData;
+@property (strong, nonatomic) NSURL *url;
 @end
 
 
@@ -94,7 +95,7 @@
     NSLog(@"Peripherial viewcontroller loaded");
 
 
-    [self setupAudio];
+//    [self setupAudio];
 }
 
 
@@ -102,7 +103,22 @@
    didPickMediaItems: (MPMediaItemCollection *) collection {
     
     [self dismissModalViewControllerAnimated: YES];
-    NSLog(@"Collection %@", collection);
+    NSLog(@"hihihihi");
+    NSArray *songs = [collection items];
+    for (MPMediaItem *song in songs) {
+        NSString *songTitle =
+        [song valueForProperty: MPMediaItemPropertyTitle];
+        NSLog (@"\t\t%@", songTitle);
+        NSString *songType =
+        [song valueForProperty: MPMediaItemPropertyMediaType];
+        NSLog (@"\t\t%@", songType);
+        self.url = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    }
+    [self setupAudio];
+    NSLog(@"setup audio!!!");
+    
+    
+
 }
 
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
@@ -124,21 +140,12 @@
     
     [self presentModalViewController: picker animated: YES];    // 4
     
-    MPMediaQuery *everything = [[MPMediaQuery alloc] init];
-    
-    NSLog(@"Logging items from a generic query...");
-    NSArray *itemsFromGenericQuery = [everything items];
-    for (MPMediaItem *song in itemsFromGenericQuery) {
-        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-        NSLog (@"%@", songTitle);
-    }
 }
 
-//- (IBAction)showMediaQuery:(id)sender {
-//    
-//}
+
 
 - (void) setupAudio {
+    NSLog(@"Inside setupAudio");
     NSError *error;
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
     if (error != nil) {
@@ -150,9 +157,12 @@
         NSAssert(error ==nil, @"");
     }
     
-    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
-                                              withExtension:@"mp3"];
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:&error];
+//    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
+//                                              withExtension:@"mp3"];
+    
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.url error:&error];
+    
+//    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.song error:&error];
     if (error != nil) {
         NSAssert(error ==nil, @"");
     }
