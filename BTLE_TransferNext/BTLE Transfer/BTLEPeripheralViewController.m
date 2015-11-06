@@ -55,6 +55,8 @@
 #import "TransferService.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MPMediaPickerController.h>
+#import <MediaPlayer/MPMediaQuery.h>
+
 
 
 @interface BTLEPeripheralViewController () <CBPeripheralManagerDelegate, UITextViewDelegate, MPMediaPickerControllerDelegate>
@@ -90,6 +92,8 @@
     // Start up the CBPeripheralManager
     _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     NSLog(@"Peripherial viewcontroller loaded");
+
+
     [self setupAudio];
 }
 
@@ -99,7 +103,6 @@
     
     [self dismissModalViewControllerAnimated: YES];
     NSLog(@"Collection %@", collection);
-//    [self updatePlayerQueueWithMediaCollection: collection];
 }
 
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
@@ -120,7 +123,20 @@
                        "Prompt in media item picker");
     
     [self presentModalViewController: picker animated: YES];    // 4
+    
+    MPMediaQuery *everything = [[MPMediaQuery alloc] init];
+    
+    NSLog(@"Logging items from a generic query...");
+    NSArray *itemsFromGenericQuery = [everything items];
+    for (MPMediaItem *song in itemsFromGenericQuery) {
+        NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
+        NSLog (@"%@", songTitle);
+    }
 }
+
+//- (IBAction)showMediaQuery:(id)sender {
+//    
+//}
 
 - (void) setupAudio {
     NSError *error;
