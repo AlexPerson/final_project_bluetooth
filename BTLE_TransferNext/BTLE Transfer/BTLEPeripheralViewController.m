@@ -112,14 +112,53 @@
         NSString *songType =
         [song valueForProperty: MPMediaItemPropertyMediaType];
         NSLog (@"\t\t%@", songType);
+        
+        //setting self url to be the URL of the current song.
         self.url = [song valueForProperty:MPMediaItemPropertyAssetURL];
+        
+        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:self.url options:nil];
+        NSLog(@"song asset %@", songAsset);
+        NSError *assetError = nil;
+        AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:songAsset error:&assetError];
+        if (assetError) {
+            NSLog (@"error: %@", assetError);
+            return;
+        }
+        AVAssetReaderOutput *assetReaderOutput = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks: songAsset.tracks audioSettings:nil];
+        if (![assetReader canAddOutput: assetReaderOutput]) {
+            NSLog(@"can't add reader output... die!");
+            return;
+        }
+        [assetReader addOutput: assetReaderOutput];
+        NSArray *dirs = NSSearchPathForDirectoriesInDomains
+        (NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+//        NSString *exportPath = [[documentsDirectoryPath
+//                                 stringByAppendingPathComponent:EXPORT_NAME]
+//                                retain];
+//        if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+//            [[NSFileManager defaultManager] removeItemAtPath:exportPath
+//                                                       error:nil];
+//        }
+//        NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
+//        
+//        AVAssetWriter *assetWriter =
+//        [AVAssetWriter assetWriterWithURL:exportURL
+//                                  fileType:AVFileTypeCoreAudioFormat
+//                                     error:&assetError];
+//        if (assetError) {
+//            NSLog (@"error: %@", assetError);
+//            return;
+//        }
     }
     [self setupAudio];
     NSLog(@"setup audio!!!");
-    
-    
-
 }
+
+
+
+
+
 
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
 {
@@ -141,7 +180,6 @@
     [self presentModalViewController: picker animated: YES];    // 4
     
 }
-
 
 
 - (void) setupAudio {
