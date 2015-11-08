@@ -55,7 +55,10 @@
 #import "TransferService.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MPMediaPickerController.h>
+#import <CoreMedia/CoreMedia.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import <MediaPlayer/MPMediaQuery.h>
+#import "TPAACAudioConverter.h"
 
 
 
@@ -70,12 +73,16 @@
 @property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
 @property (strong, nonatomic) NSData *musicData;
 @property (strong, nonatomic) NSURL *url;
+@property (nonatomic, retain) IBOutlet UILabel *sizeLabel;
+@property (strong, nonatomic) NSData *exportedMusicData;
+@property (nonatomic) TPAACAudioConverter *audioConverter;
+
 @end
 
 
 
-#define NOTIFY_MTU      20
-
+#define NOTIFY_MTU      150
+#define EXPORT_NAME @"exported.caf"
 
 
 @implementation BTLEPeripheralViewController
@@ -98,73 +105,11 @@
 //    [self setupAudio];
 }
 
-
-- (void) mediaPicker: (MPMediaPickerController *) mediaPicker
-   didPickMediaItems: (MPMediaItemCollection *) collection {
-    
-    [self dismissModalViewControllerAnimated: YES];
-    NSLog(@"hihihihi");
-    NSArray *songs = [collection items];
-    for (MPMediaItem *song in songs) {
-        NSString *songTitle =
-        [song valueForProperty: MPMediaItemPropertyTitle];
-        NSLog (@"\t\t%@", songTitle);
-        NSString *songType =
-        [song valueForProperty: MPMediaItemPropertyMediaType];
-        NSLog (@"\t\t%@", songType);
-        
-        //setting self url to be the URL of the current song.
-        self.url = [song valueForProperty:MPMediaItemPropertyAssetURL];
-        
-        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:self.url options:nil];
-        NSLog(@"song asset %@", songAsset);
-        NSError *assetError = nil;
-        AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:songAsset error:&assetError];
-        if (assetError) {
-            NSLog (@"error: %@", assetError);
-            return;
-        }
-        AVAssetReaderOutput *assetReaderOutput = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks: songAsset.tracks audioSettings:nil];
-        if (![assetReader canAddOutput: assetReaderOutput]) {
-            NSLog(@"can't add reader output... die!");
-            return;
-        }
-        [assetReader addOutput: assetReaderOutput];
-        NSArray *dirs = NSSearchPathForDirectoriesInDomains
-        (NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-//        NSString *exportPath = [[documentsDirectoryPath
-//                                 stringByAppendingPathComponent:EXPORT_NAME]
-//                                retain];
-//        if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
-//            [[NSFileManager defaultManager] removeItemAtPath:exportPath
-//                                                       error:nil];
-//        }
-//        NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
-//        
-//        AVAssetWriter *assetWriter =
-//        [AVAssetWriter assetWriterWithURL:exportURL
-//                                  fileType:AVFileTypeCoreAudioFormat
-//                                     error:&assetError];
-//        if (assetError) {
-//            NSLog (@"error: %@", assetError);
-//            return;
-//        }
-    }
-    [self setupAudio];
-    NSLog(@"setup audio!!!");
-}
-
-
-
-
-
-
 - (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker
 {
     [self dismissModalViewControllerAnimated: YES];
-//      [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-
+    //      [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 - (IBAction)showMediaPicker:(id)sender {
@@ -181,8 +126,298 @@
     
 }
 
+- (void) mediaPicker: (MPMediaPickerController *) mediaPicker
+   didPickMediaItems: (MPMediaItemCollection *) collection {
+    NSLog(@"item picked");
+
+    
+    [self dismissModalViewControllerAnimated: YES];
+    NSLog(@"hihihihi");
+    NSArray *songs = [collection items];
+    for (MPMediaItem *song in songs) {
+        NSString *songTitle =
+        [song valueForProperty: MPMediaItemPropertyTitle];
+        NSLog (@"\t\t%@", songTitle);
+        NSString *songType =
+        [song valueForProperty: MPMediaItemPropertyMediaType];
+        NSLog (@"\t\t%@", songType);
+        
+        //setting self url to be the URL of the current song.
+        self.url = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    }
+    
+    AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:self.url options:nil];
+    NSLog(@"song asset %@", songAsset);
+    NSError *assetError = nil;
+    AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:songAsset error:&assetError];
+    if (assetError) {
+        NSLog (@"error: %@", assetError);
+        return;
+    }
+    AVAssetReaderOutput *assetReaderOutput = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks: songAsset.tracks audioSettings:nil];
+    if (![assetReader canAddOutput: assetReaderOutput]) {
+        NSLog(@"can't add reader output... die!");
+        return;
+    }
+    [assetReader addOutput: assetReaderOutput];
+    NSArray *dirs = NSSearchPathForDirectoriesInDomains
+    (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+    NSString *exportPath = [documentsDirectoryPath
+                            stringByAppendingPathComponent:EXPORT_NAME];
+    NSLog (@"exportpath: %@", exportPath);
+    if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:exportPath
+                                                   error:nil];
+    }
+    NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
+    NSLog (@"exportURL: %@", exportURL);
+    AVAssetWriter *assetWriter =
+    [AVAssetWriter assetWriterWithURL:exportURL
+                             fileType:AVFileTypeCoreAudioFormat
+                                error:&assetError];
+//    [AVAssetWriter assetWriterWithURL:exportURL
+//                             fileType:AVFileTypeAppleM4A
+//                                error:&assetError];
+//    
+    NSLog(@"asset write: %@", assetWriter);
+    if (assetError) {
+        NSLog (@"error: %@", assetError);
+        return;
+    }
+    AudioChannelLayout channelLayout;
+    memset(&channelLayout, 0, sizeof(AudioChannelLayout));
+    channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Stereo;
+    NSDictionary *outputSettings =
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     [NSNumber numberWithInt:kAudioFormatLinearPCM], AVFormatIDKey,
+     [NSNumber numberWithFloat:8000.0], AVSampleRateKey,
+     [NSNumber numberWithInt:2], AVNumberOfChannelsKey,
+     [NSData dataWithBytes:&channelLayout length:sizeof(AudioChannelLayout)],
+     AVChannelLayoutKey,
+     [NSNumber numberWithInt:16], AVLinearPCMBitDepthKey,
+     [NSNumber numberWithBool:NO], AVLinearPCMIsNonInterleaved,
+     [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
+     [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
+     nil];
+    
+    AVAssetWriterInput *assetWriterInput =
+    [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio
+                                       outputSettings:outputSettings];
+    NSLog(@"asset write input: %@", assetWriterInput);
+    if ([assetWriter canAddInput:assetWriterInput]) {
+        [assetWriter addInput:assetWriterInput];
+    } else {
+        NSLog (@"can't add asset writer input... die!");
+        return;
+    }
+    assetWriterInput.expectsMediaDataInRealTime = NO;
+    
+    [assetWriter startWriting];
+    [assetReader startReading];
+    AVAssetTrack *soundTrack = [songAsset.tracks objectAtIndex:0];
+    NSLog(@"sound track: %@", soundTrack);
+    CMTime startTime = CMTimeMake (0, soundTrack.naturalTimeScale);
+    [assetWriter startSessionAtSourceTime: startTime];
+    NSLog(@"start time: %f", startTime);
+    __block UInt64 convertedByteCount = 0;
+    dispatch_queue_t mediaInputQueue =
+    dispatch_queue_create("mediaInputQueue", NULL);
+    NSLog(@"media input queue: %@", mediaInputQueue);
+    [assetWriterInput requestMediaDataWhenReadyOnQueue:mediaInputQueue
+                                            usingBlock: ^
+     {
+         while (assetWriterInput.readyForMoreMediaData) {
+             CMSampleBufferRef nextBuffer =
+             [assetReaderOutput copyNextSampleBuffer];
+             if (nextBuffer) {
+                 // append buffer
+                 [assetWriterInput appendSampleBuffer: nextBuffer];
+                 // update ui
+                 convertedByteCount +=
+                 CMSampleBufferGetTotalSampleSize (nextBuffer);
+                 NSNumber *convertedByteCountNumber =
+                 [NSNumber numberWithLong:convertedByteCount];
+                 [self performSelectorOnMainThread:@selector(updateSizeLabel:)
+                                        withObject:convertedByteCountNumber
+                                     waitUntilDone:NO];
+             } else {
+                 // done!
+                 [assetWriterInput markAsFinished];
+                 [assetWriter finishWriting];
+                 [assetReader cancelReading];
+                 NSDictionary *outputFileAttributes =
+                 [[NSFileManager defaultManager]
+                  attributesOfItemAtPath:exportPath
+                  error:nil];
+                 NSLog (@"done. file size is %ld",
+                        [outputFileAttributes fileSize]);
+                 NSNumber *doneFileSize = [NSNumber numberWithLong:
+                                           [outputFileAttributes fileSize]];
+                 [self performSelectorOnMainThread:@selector(updateCompletedSizeLabel:)
+                                        withObject:doneFileSize
+                                     waitUntilDone:NO];
+                 // release a lot of stuff
+                 self.exportedMusicData = [NSData dataWithContentsOfURL:exportURL];
+                 NSLog(@"exported music data length: %i", self.exportedMusicData.length);
+//                 NSLog(@"exported music data: %@", self.exportedMusicData);
+                 NSLog (@"bottom of convertTapped:");
+
+                 break;
+                 
+             }
+         }
+     }];
+    
+    self.exportedMusicData = [NSData dataWithContentsOfURL:exportURL];
+    
+}
+
+
+-(void) updateSizeLabel: (NSNumber*) convertedByteCountNumber {
+    UInt64 convertedByteCount = [convertedByteCountNumber longValue];
+    self.sizeLabel.text = [NSString stringWithFormat: @"%llu bytes converted", convertedByteCount];
+}
+
+-(void) updateCompletedSizeLabel: (NSNumber*) convertedByteCountNumber {
+    UInt64 convertedByteCount = [convertedByteCountNumber longValue];
+    self.sizeLabel.text = [NSString stringWithFormat: @"done. file size is %llu", convertedByteCount];
+}
+
+-(void) convertAudio
+{
+    if ( ![TPAACAudioConverter AACConverterAvailable] ) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Converting audio", @"")
+                                    message:NSLocalizedString(@"Couldn't convert audio: Not supported on this device", @"")
+                                   delegate:nil
+                          cancelButtonTitle:nil
+                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil] show];
+        return;
+    }
+    
+    // Register an Audio Session interruption listener, important for AAC conversion
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(audioSessionInterrupted:)
+                                                 name:AVAudioSessionInterruptionNotification
+                                               object:nil];
+    
+    // Set up an audio session compatible with AAC conversion.  Note that AAC conversion is incompatible with any session that provides mixing with other device audio.
+    NSError *error = nil;
+    if ( ![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
+                                           withOptions:0
+                                                 error:&error] ) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Converting audio", @"")
+                                    message:[NSString stringWithFormat:NSLocalizedString(@"Couldn't setup audio category: %@", @""), error.localizedDescription]
+                                   delegate:nil
+                          cancelButtonTitle:nil
+                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil] show];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        return;
+    }
+    
+    // Activate audio session
+    if ( ![[AVAudioSession sharedInstance] setActive:YES error:NULL] ) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Converting audio", @"")
+                                    message:[NSString stringWithFormat:NSLocalizedString(@"Couldn't activate audio category: %@", @""), error.localizedDescription]
+                                   delegate:nil
+                          cancelButtonTitle:nil
+                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil] show];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        return;
+        
+    }
+    
+    NSArray *dirs = NSSearchPathForDirectoriesInDomains
+    (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+    NSString *exportPath = [documentsDirectoryPath
+                            stringByAppendingPathComponent:EXPORT_NAME];
+    NSLog(@"Compare export: %@", exportPath);
+    
+    NSArray *documentsFolders = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    self.audioConverter = [[TPAACAudioConverter alloc] initWithDelegate:self
+                                                                 source:exportPath
+                                                            destination:[[documentsFolders objectAtIndex:0] stringByAppendingPathComponent:@"exported.m4a"]];
+    
+    
+//        NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
+//    NSString *exportPath = [documentsDirectoryPath
+//                            stringByAppendingPathComponent:EXPORT_NAME];
+//    NSLog (@"exportpath: %@", exportPath);
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
+//        [[NSFileManager defaultManager] removeItemAtPath:exportPath
+//                                                   error:nil];
+//    }
+//    NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
+    
+    
+    
+//    ((UIButton*)sender).enabled = NO;
+//    [self.spinner startAnimating];
+//    self.progressView.progress = 0.0;
+//    self.progressView.hidden = NO;
+    [_audioConverter start];
+
+}
+//
+//
+#pragma mark - Audio converter delegate
+
+-(void)AACAudioConverter:(TPAACAudioConverter *)converter didMakeProgress:(CGFloat)progress {
+//    self.progressView.progress = progress;
+    NSLog(@"didMakeProgress called");
+}
+//
+-(void)AACAudioConverterDidFinishConversion:(TPAACAudioConverter *)converter {
+//    self.progressView.hidden = YES;
+//    [self.spinner stopAnimating];
+//    self.convertButton.enabled = YES;
+//    self.playConvertedButton.enabled = YES;
+//    self.emailConvertedButton.enabled = YES;
+//    self.audioConverter = nil;
+    NSArray *documentsFolders = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString* converted = [[documentsFolders objectAtIndex:0] stringByAppendingPathComponent:@"exported.m4a"];
+    NSData * contents = [NSData dataWithContentsOfMappedFile:converted];
+    NSLog(@"converted song size: %i", contents.length);
+    
+    NSLog(@"conversion finished");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+//
+-(void)AACAudioConverter:(TPAACAudioConverter *)converter didFailWithError:(NSError *)error {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Converting audio", @"")
+                                message:[NSString stringWithFormat:NSLocalizedString(@"Couldn't convert audio: %@", @""), [error localizedDescription]]
+                               delegate:nil
+                      cancelButtonTitle:nil
+                      otherButtonTitles:NSLocalizedString(@"OK", @""), nil] show];
+//    self.convertButton.enabled = YES;
+    self.audioConverter = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+//
+//
+#pragma mark - Audio session interruption
+
+- (void)audioSessionInterrupted:(NSNotification*)notification {
+    AVAudioSessionInterruptionType type = [notification.userInfo[AVAudioSessionInterruptionTypeKey] integerValue];
+    
+    if ( type == AVAudioSessionInterruptionTypeEnded) {
+        [[AVAudioSession sharedInstance] setActive:YES error:NULL];
+        if ( _audioConverter ) [_audioConverter resume];
+    } else if ( type == AVAudioSessionInterruptionTypeBegan ) {
+        if ( _audioConverter ) [_audioConverter interrupt];
+    }
+}
+
+
+
+
+
 
 - (void) setupAudio {
+    
     NSLog(@"Inside setupAudio");
     NSError *error;
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
@@ -198,9 +433,9 @@
 //    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
 //                                              withExtension:@"mp3"];
     
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.url error:&error];
+//    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.url error:&error];
     
-//    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.song error:&error];
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.exportedMusicData error:&error];
     if (error != nil) {
         NSAssert(error ==nil, @"");
     }
@@ -212,6 +447,10 @@
 
 
 - (IBAction)playButtonPressed:(id)sender {
+    NSLog(@"play Button Pressed");
+    [self convertAudio];
+//    [self performSelectorInBackground:@selector(convertAudio) withObject:nil];
+    [self setupAudio];
     BOOL played = [self.audioPlayer play];
     if (!played) {
         NSLog(@"Error");
@@ -219,10 +458,15 @@
 //    NSString * musicPath = [[NSBundle mainBundle] pathForResource:@"SoManyTimes" ofType:@"mp3"];
 //    self.musicData = [NSData dataWithContentsOfFile:musicPath];
 //    _dataToSend = _musicData;
-    NSLog(@"file url: %@", self.url);
-    self.musicData = [NSData dataWithContentsOfURL:self.url];
-    NSLog(@"musicData: %@", self.musicData);
-    _dataToSend = self.musicData;
+    NSLog(@"exported music data: %@", self.exportedMusicData);
+     NSLog(@"exported music data: %i", self.exportedMusicData.length);
+    NSArray *documentsFolders = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* converted = [[documentsFolders objectAtIndex:0] stringByAppendingPathComponent:@"exported.m4a"];
+    NSData * contents = [NSData dataWithContentsOfMappedFile:converted];
+//    self.musicData = [NSData dataWithContentsOfURL:self.url];
+//    NSLog(@"musicData: %@", self.musicData);
+//    _dataToSend = self.exportedMusicData;
+    _dataToSend = contents;
     NSLog(@"data to send, %@", _dataToSend);
     [self sendData];
     NSLog(@"data sent");
@@ -298,7 +542,7 @@
     self.sendDataIndex = 0;
     
     // Start sending
-//    [self sendData];
+    [self sendData];
 }
 
 
@@ -406,7 +650,7 @@
 - (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral
 {
     // Start sending again
-//    [self sendData];
+    [self sendData];
 }
 
 

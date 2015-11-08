@@ -297,6 +297,7 @@
     // Have we got everything we need?
     if ([stringFromData isEqualToString:@"EOM"]) {
         NSLog(@"characteristic updated");
+        [self setupAudio];
         // We have, so show the data
         [self.textview setText:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
         

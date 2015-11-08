@@ -11,6 +11,12 @@
 		001597811BECC2F800DB4587 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F9161B15D5806400B3B398 /* Foundation.framework */; };
 		001597831BECC52A00DB4587 /* SoManyTimes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 001597821BECC52A00DB4587 /* SoManyTimes.mp3 */; };
 		00E6CB841BECE7E500BD47C4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */; };
+		0DB210EF1BEEC3740041C84A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DB210EE1BEEC3740041C84A /* CoreMedia.framework */; };
+		0DB210F11BEEC48A0041C84A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DB210F01BEEC48A0041C84A /* AudioToolbox.framework */; };
+		0DE28AAE1BEFA4F400B93461 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DE28AAD1BEFA4F400B93461 /* CoreAudio.framework */; };
+		0DE28AB01BEFA51100B93461 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DE28AAF1BEFA51100B93461 /* CoreFoundation.framework */; };
+		0DE28AC31BEFE6C000B93461 /* TPAACAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE28AC21BEFE6C000B93461 /* TPAACAudioConverter.m */; };
+		0DE28AC51BEFF44C00B93461 /* audio.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 0DE28AC41BEFF44C00B93461 /* audio.aiff */; };
 		B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */; };
 		B92B557315E453690036A8A2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557215E453690036A8A2 /* Icon-57.png */; };
 		B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557415E4536C0036A8A2 /* Icon-114.png */; };
@@ -35,6 +41,13 @@
 		0015977F1BECBFD400DB4587 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		001597821BECC52A00DB4587 /* SoManyTimes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SoManyTimes.mp3; sourceTree = "<group>"; };
 		00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		0DB210EE1BEEC3740041C84A /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		0DB210F01BEEC48A0041C84A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		0DE28AAD1BEFA4F400B93461 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		0DE28AAF1BEFA51100B93461 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		0DE28AC11BEFE6C000B93461 /* TPAACAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAACAudioConverter.h; sourceTree = "<group>"; };
+		0DE28AC21BEFE6C000B93461 /* TPAACAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAACAudioConverter.m; sourceTree = "<group>"; };
+		0DE28AC41BEFF44C00B93461 /* audio.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = audio.aiff; sourceTree = "<group>"; };
 		B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		B92B557215E453690036A8A2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-57.png"; path = "../Icon-57.png"; sourceTree = "<group>"; };
 		B92B557415E4536C0036A8A2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-114.png"; path = "../Icon-114.png"; sourceTree = "<group>"; };
@@ -71,6 +84,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DE28AB01BEFA51100B93461 /* CoreFoundation.framework in Frameworks */,
+				0DE28AAE1BEFA4F400B93461 /* CoreAudio.framework in Frameworks */,
+				0DB210F11BEEC48A0041C84A /* AudioToolbox.framework in Frameworks */,
+				0DB210EF1BEEC3740041C84A /* CoreMedia.framework in Frameworks */,
 				00E6CB841BECE7E500BD47C4 /* MediaPlayer.framework in Frameworks */,
 				001597811BECC2F800DB4587 /* Foundation.framework in Frameworks */,
 				001597801BECBFD400DB4587 /* AVFoundation.framework in Frameworks */,
@@ -103,6 +120,10 @@
 		B9F9161815D5806400B3B398 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DE28AAF1BEFA51100B93461 /* CoreFoundation.framework */,
+				0DE28AAD1BEFA4F400B93461 /* CoreAudio.framework */,
+				0DB210F01BEEC48A0041C84A /* AudioToolbox.framework */,
+				0DB210EE1BEEC3740041C84A /* CoreMedia.framework */,
 				00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */,
 				0015977F1BECBFD400DB4587 /* AVFoundation.framework */,
 				B92B558F15E4621C0036A8A2 /* CoreBluetooth.framework */,
@@ -120,6 +141,8 @@
 				B9F9162915D5806400B3B398 /* AppDelegate.m */,
 				B9F9163115D5806500B3B398 /* MainStoryboard_iPhone.storyboard */,
 				B9F9163415D5806500B3B398 /* MainStoryboard_iPad.storyboard */,
+				0DE28AC11BEFE6C000B93461 /* TPAACAudioConverter.h */,
+				0DE28AC21BEFE6C000B93461 /* TPAACAudioConverter.m */,
 				B9F9163715D5806500B3B398 /* ViewController.h */,
 				B9F9163815D5806500B3B398 /* ViewController.m */,
 				001597821BECC52A00DB4587 /* SoManyTimes.mp3 */,
@@ -136,6 +159,7 @@
 		B9F9162015D5806400B3B398 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0DE28AC41BEFF44C00B93461 /* audio.aiff */,
 				B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */,
 				B92B558015E4574D0036A8A2 /* Default-Portrait~ipad.png */,
 				B92B557E15E457480036A8A2 /* Default-Portrait@2x~ipad.png */,
@@ -217,6 +241,7 @@
 				B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */,
 				B92B557715E4541E0036A8A2 /* Icon-72.png in Resources */,
 				B92B557915E4545B0036A8A2 /* Icon-144.png in Resources */,
+				0DE28AC51BEFF44C00B93461 /* audio.aiff in Resources */,
 				B92B557F15E457480036A8A2 /* Default-Portrait@2x~ipad.png in Resources */,
 				B92B558115E4574D0036A8A2 /* Default-Portrait~ipad.png in Resources */,
 				B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */,
@@ -231,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9F9162615D5806400B3B398 /* main.m in Sources */,
+				0DE28AC31BEFE6C000B93461 /* TPAACAudioConverter.m in Sources */,
 				B9F9162A15D5806400B3B398 /* AppDelegate.m in Sources */,
 				B9F9163915D5806500B3B398 /* ViewController.m in Sources */,
 				B9F9164115D5808200B3B398 /* BTLECentralViewController.m in Sources */,
