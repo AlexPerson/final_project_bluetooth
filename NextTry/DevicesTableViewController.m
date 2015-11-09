@@ -160,7 +160,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     CBPeripheral *current = [discoveredPeripheralDevices objectAtIndex:indexPath.row];
-    NSLog(@"current table cell peripheral is %@", [current name]);
+    NSLog(@"new added cell is %@", [current name]);
     cell.textLabel.text = [current name];
     
     return cell;
@@ -179,7 +179,7 @@
 //    NSLog(@"Connecting to peripheral %@", cd);
 //    [self.centralManager connectPeripheral:cd options:nil];
     cvc.selectedPeripheral = cd;
-    cvc.centralManager = self.centralManager;
+//    cvc.centralManager = self.centralManager;
 }
 
 @end

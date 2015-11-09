@@ -27,12 +27,16 @@
     [super viewDidLoad];
     
     CBPeripheral *peripheral = self.selectedPeripheral;
-    CBCentralManager *central = self.centralManager;
+    // Start up the CBCentralManager
+    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     
-//    // Connect to selected peripheral
-     NSLog(@"Connecting to peripheral %@", peripheral);
-    [central connectPeripheral:peripheral options:nil];
-    self.selectedPeripheral = peripheral;
+    // And somewhere to store the incoming data
+    _data = [[NSMutableData alloc] init];
+    
+////    // Connect to selected peripheral
+//     NSLog(@"Connecting to peripheral %@", peripheral);
+//    [central connectPeripheral:peripheral options:nil];
+//    self.selectedPeripheral = peripheral;
     self.deviceDetailsLable.text = [self.selectedPeripheral name];
     
 }
@@ -49,13 +53,21 @@
         return;
     }
     
+
 //    NSLog(@"Discovered %@ at %@", peripheral.name, RSSI);
     
     // Ok, it's in range - have we already seen it?
-//    if (self.discoveredPeripheral != peripheral) {
-    self.discoveredPeripheral = peripheral;
-    if ([peripheral name] == [self.discoveredPeripheral name]) {
-        NSLog(@"central manager: %@ is attempting to connect with %@", self.centralManager, peripheral);
+     if (self.discoveredPeripheral != peripheral) {
+    
+        self.discoveredPeripheral = peripheral;
+        
+         NSLog(@"Conecting to peripheral %@", peripheral);
+         
+//    if ([self.selectedPeripheral name] == [self.discoveredPeripheral name]) {
+//        NSLog(@"central manager: %@ is attempting to connect with %@", self.centralManager, peripheral);
+         NSLog(@"selected peripheral: %@", [self.selectedPeripheral name] );
+         NSLog(@"discovered peripheral:%@", [self.discoveredPeripheral name] );
+
         [self.centralManager connectPeripheral:peripheral options:nil];
     }
 }
@@ -258,6 +270,20 @@
                                                 options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
     
     NSLog(@"Scanning started");
+}
+
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central
+{
+    if (central.state != CBCentralManagerStatePoweredOn) {
+        // In a real app, you'd deal with all the states correctly
+        return;
+    }
+    
+    // The state must be CBCentralManagerStatePoweredOn...
+    
+    // ... so start scanning
+    [self scan];
+    
 }
 
 
