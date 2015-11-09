@@ -22,7 +22,6 @@
 
     NSDictionary *courseDetails;
     NSArray *justCourseNames;
-    NSMutableArray *peripheralList;
     NSArray *testNames;
 }
 
@@ -59,6 +58,23 @@
     return cell;
     
 }
+
+-(void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Button clicked");
+    [self performSegueWithIdentifier:@"listToDevice" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Make sure your segue name in storyboard is the same as this line
+    if ([[segue identifier] isEqualToString:@"listToDevice"])
+    {
+        //if you need to pass data to the next controller do it here
+    }
+}
+
+
 
 #pragma mark - View Lifecycle
 
@@ -173,7 +189,7 @@
     {
         [_discoveredPeripheralsArray addObject: peripheral];
         
-        testNames = @[@"reloaded",@"data",@"now!"];
+//        testNames = @[@"reloaded",@"data",@"now!"];
         
         [self.tableview reloadData];
     }

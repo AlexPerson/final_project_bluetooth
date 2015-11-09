@@ -1,0 +1,18 @@
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "0BW-HV-zwy"; */
+"0BW-HV-zwy.normalTitle" = "Done";
+
+/* Class = "UILabel"; text = "Advertising"; ObjectID = "Uim-IT-mjR"; */
+"Uim-IT-mjR.text" = "Advertising";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "XOm-VK-8dX"; */
+"XOm-VK-8dX.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Central"; ObjectID = "Xn2-cP-TuQ"; */
+"Xn2-cP-TuQ.normalTitle" = "Central";
+
+/* Class = "UIButton"; normalTitle = "Peripheral"; ObjectID = "aJl-pa-U38"; */
+"aJl-pa-U38.normalTitle" = "Peripheral";
+
+/* Class = "UITextView"; text = "Here is a bunch of sample text.  Hold another device close to see the transfer happen."; ObjectID = "oJM-il-yPs"; */
+"oJM-il-yPs.text" = "Here is a bunch of sample text.  Hold another device close to see the transfer happen.";

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11639AF21BEE5BFF007BC469 /* DevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11639AF11BEE5BFF007BC469 /* DevicesTableViewController.m */; };
+		11639AF51BEE5D10007BC469 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 11639AF41BEE5D10007BC469 /* Device.m */; };
 		11E0596D1BECD21D0076FFF6 /* courses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 11E0596C1BECD21D0076FFF6 /* courses.plist */; };
 		B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */; };
 		B92B557315E453690036A8A2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557215E453690036A8A2 /* Icon-57.png */; };
@@ -30,6 +32,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11639AF01BEE5BFF007BC469 /* DevicesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicesTableViewController.h; sourceTree = "<group>"; };
+		11639AF11BEE5BFF007BC469 /* DevicesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicesTableViewController.m; sourceTree = "<group>"; };
+		11639AF31BEE5D10007BC469 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		11639AF41BEE5D10007BC469 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
 		11E0596C1BECD21D0076FFF6 /* courses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = courses.plist; sourceTree = "<group>"; };
 		B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		B92B557215E453690036A8A2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-57.png"; path = "../Icon-57.png"; sourceTree = "<group>"; };
@@ -111,11 +117,15 @@
 				B9F9162815D5806400B3B398 /* AppDelegate.h */,
 				B9F9162915D5806400B3B398 /* AppDelegate.m */,
 				B9F9163115D5806500B3B398 /* MainStoryboard_iPhone.storyboard */,
+				11639AF01BEE5BFF007BC469 /* DevicesTableViewController.h */,
+				11639AF11BEE5BFF007BC469 /* DevicesTableViewController.m */,
 				B9F9163415D5806500B3B398 /* MainStoryboard_iPad.storyboard */,
 				B9F9163715D5806500B3B398 /* ViewController.h */,
 				B9F9163815D5806500B3B398 /* ViewController.m */,
 				B9F9163F15D5808200B3B398 /* BTLECentralViewController.h */,
 				B9F9164015D5808200B3B398 /* BTLECentralViewController.m */,
+				11639AF31BEE5D10007BC469 /* Device.h */,
+				11639AF41BEE5D10007BC469 /* Device.m */,
 				B9F9164215D5808F00B3B398 /* BTLEPeripheralViewController.h */,
 				B9F9164315D5808F00B3B398 /* BTLEPeripheralViewController.m */,
 				B9F9164715D583E500B3B398 /* TransferService.h */,
@@ -175,7 +185,7 @@
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					B9F9161415D5806400B3B398 = {
-						DevelopmentTeam = 858GSPC73G;
+						DevelopmentTeam = B949PC28JZ;
 					};
 				};
 			};
@@ -227,6 +237,8 @@
 				B9F9163915D5806500B3B398 /* ViewController.m in Sources */,
 				B9F9164115D5808200B3B398 /* BTLECentralViewController.m in Sources */,
 				B9F9164415D5808F00B3B398 /* BTLEPeripheralViewController.m in Sources */,
+				11639AF51BEE5D10007BC469 /* Device.m in Sources */,
+				11639AF21BEE5BFF007BC469 /* DevicesTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +331,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTLE Transfer/BTLE Transfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/BTLE Transfer/BTLE Transfer-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluebuddies.nexttest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bluebuddiesss.nexttest;
 				PRODUCT_NAME = "BTLE Transfer";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -337,7 +349,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTLE Transfer/BTLE Transfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/BTLE Transfer/BTLE Transfer-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bluebuddies.nexttest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bluebuddiesss.nexttest;
 				PRODUCT_NAME = "BTLE Transfer";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
