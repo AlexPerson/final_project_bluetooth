@@ -64,8 +64,19 @@
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 @property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
 
+@property (strong, nonatomic) NSURL *audioFileURL;
+
 
 @end
+
+
+#define NUM_BUFFERS 4
+
+static SInt64 currentByte;
+static AudioStreamBasicDescription audioFormat;  //to be setup in audio setup
+static AudioQueueRef queue;
+static AudioQueueBufferRef buffers[NUM_BUFFERS];
+static AudioFileID audioFileID;
 
 
 @implementation BTLECentralViewController
@@ -84,32 +95,55 @@
     // And somewhere to store the incoming data
     _data = [[NSMutableData alloc] init];
     NSLog(@"Centralviewcontroller loaded");
-//    [self setupAudio];
+    [self setupAudio];
 }
 
+
+//audio setup setting audio format object.
 - (void) setupAudio {
+    audioFormat.mSampleRate = 44100.00;
+    audioFormat.mFormatID = kAudioFormatLinearPCM;
+    audioFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
+    audioFormat.mFramesPerPacket = 1;
+    audioFormat.mChannelsPerFrame = 1;
+    audioFormat.mBitsPerChannel = 16;
+    audioFormat.mBytesPerFrame = audioFormat.mChannelsPerFrame * sizeof(SInt16);
+    audioFormat.mBytesPerPacket = audioFormat.mFramesPerPacket * audioFormat.mBytesPerFrame;
+    
+    //now we start to play the file...first initialize...
     NSError *error;
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
-    if (error != nil) {
-        NSAssert(error ==nil, @"");
-    }
-    
+    NSAssert(error == nil, @"Error");
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
-    if (error != nil) {
-        NSAssert(error ==nil, @"");
-    }
-    
-//    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
-//                                              withExtension:@"mp3"];
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.data error:&error];
-    if (error != nil) {
-        NSAssert(error ==nil, @"");
-    }
-    
-    [self.audioPlayer setVolume:self.volumeSlider.value];
-    [self.audioPlayer prepareToPlay];
-    
+    NSAssert(error == nil, @"Error");
+
 }
+
+
+//
+//- (void) setupAudio {
+//    NSError *error;
+//    [[AVAudioSession sharedInstance] setActive:YES error:&error];
+//    if (error != nil) {
+//        NSAssert(error ==nil, @"");
+//    }
+//    
+//    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
+//    if (error != nil) {
+//        NSAssert(error ==nil, @"");
+//    }
+//    
+////    NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"SoManyTimes"
+////                                              withExtension:@"mp3"];
+//    self.audioPlayer = [[AVAudioPlayer alloc] initWithData:self.data error:&error];
+//    if (error != nil) {
+//        NSAssert(error ==nil, @"");
+//    }
+//    
+//    [self.audioPlayer setVolume:self.volumeSlider.value];
+//    [self.audioPlayer prepareToPlay];
+//    
+//}
 
 
 - (IBAction)playButtonPressed:(id)sender {
@@ -315,11 +349,106 @@
             //setup audio queue for playback
             //audio queue play
     //end
+    if (self.data.length > 65000) {
+        
+        //instantiate the audiofileID
+        NSString *urlString = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding]; // Or any other appropriate encoding
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        OSStatus status1;
+        status1 = AudioFileCreateWithURL((__bridge CFURLRef)url, kAudioFileM4AType, &audioFormat, kAudioFileFlags_EraseFile, &audioFileID);
+        NSAssert(status1 == noErr, @"Error");
+
+        
+        [self startPlayback];
+ 
+        
+    }
+    
     
     
     // Log it
     NSLog(@"Received: %@", stringFromData);
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+void AudioOutputCallback(void *inUserData,
+                         AudioQueueRef outAQ,
+                         AudioQueueBufferRef outBuffer
+                         ) {
+    
+    BTLECentralViewController *viewController = (__bridge BTLECentralViewController*)inUserData;
+    
+    //set number of bytes should agree with buffer size
+    UInt32 numBytes = 16000;
+    //involk reading audio file method at the currentByte and load some data into the buffer
+    OSStatus status = AudioFileReadBytes(audioFileID, false, currentByte, &numBytes, outBuffer->mAudioData);
+    
+    if (status != noErr && status != kAudioFileEndOfFileError) {
+        printf("Error\n");
+        return;
+    }
+    //if the buffer has read some data, then we tell the queue the buffer is ready
+    if (numBytes > 0) {
+        outBuffer->mAudioDataByteSize = numBytes;
+        //enqueue the filled buffer to the back of the filled buffered queue on the audio queue
+        OSStatus statusOfEnqueue = AudioQueueEnqueueBuffer(queue, outBuffer, 0, NULL);
+        if (statusOfEnqueue != noErr) {
+            printf("Error\n");
+            return;
+        }
+        //move the current position where the buffers had last read something
+        currentByte += numBytes;
+    }
+    
+    //end of the audio file - as the callback is involved as a part of audioQueueStart, the callback ends the queue and cleans up when it detects end of file.
+    if (numBytes == 0 || status == kAudioFileEndOfFileError) {
+        AudioQueueStop(queue,false);
+        AudioFileClose(audioFileID);
+    }
+    
+}
+
+
+- (void) startPlayback {
+    
+    //store the position of the playback, starting with 0
+    currentByte = 0;
+    
+    //open the Audio file that was recorded earlier
+    OSStatus status = AudioFileOpenURL((__bridge CFURLRef) (self.audioFileURL), kAudioFileReadPermission, kAudioFileM4AType, &audioFileID);
+    NSAssert(status == noErr,@"Error");
+    
+    //making a new audio queue object with an output call back
+    status = AudioQueueNewOutput(&audioFormat, AudioOutputCallback,
+                                 (__bridge void*)self
+                                 , CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &queue);
+    NSAssert(status == noErr,@"Error");
+    
+    //loop through the buffers to allocate and playback on the queue
+    for (int i = 0; i < NUM_BUFFERS; i++) {
+        //allocate each buffer
+        status = AudioQueueAllocateBuffer(queue, 16000, &buffers[i]);
+        NSAssert(status == noErr,@"Error");
+        //involk the callback function on the controller, audio queue and this buffer, this will fill the buffers with audio data and send them to the queue, before starting the queue. This is preparation stage before the queue can enter into a steady state of cycles.
+        AudioOutputCallback((__bridge void*)self,queue,buffers[i]);
+    }
+    //start the queue and at this point audio should start playing immediately from the buffers and the steady state of buffer cycles managed by the audio queue and callback function should start.
+    NSLog(@"Music starts now!");
+    //Queue starts to play the buffer data and enters into a steady state.
+    status = AudioQueueStart(queue, NULL);
+    NSAssert(status == noErr,@"Error");
+    
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 /** The peripheral letting us know whether our subscribe/unsubscribe happened or not
