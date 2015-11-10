@@ -298,6 +298,7 @@
         NSLog(@"characteristic updated");
         // We have, so show the data
         [self.textview setText:[[NSString alloc] initWithData:self.data encoding:NSUTF8StringEncoding]];
+        [self setupAudio];
         
         // Cancel our subscription to the characteristic
         [peripheral setNotifyValue:NO forCharacteristic:characteristic];
@@ -308,6 +309,13 @@
 
     // Otherwise, just add the data on to what we already have
     [self.data appendData:characteristic.value];
+    
+    
+    //if data.length > 10kb
+            //setup audio queue for playback
+            //audio queue play
+    //end
+    
     
     // Log it
     NSLog(@"Received: %@", stringFromData);

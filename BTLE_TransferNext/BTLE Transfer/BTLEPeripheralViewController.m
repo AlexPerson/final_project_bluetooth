@@ -134,10 +134,6 @@
     }
 }
 
-//- (IBAction)showMediaQuery:(id)sender {
-//    
-//}
-
 - (void) setupAudio {
     NSError *error;
     [[AVAudioSession sharedInstance] setActive:YES error:&error];
@@ -162,13 +158,16 @@
     
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
 
 - (IBAction)playButtonPressed:(id)sender {
     BOOL played = [self.audioPlayer play];
     if (!played) {
         NSLog(@"Error");
     }
-    NSString * musicPath = [[NSBundle mainBundle] pathForResource:@"SoManyTimes" ofType:@"mp3"];
+    NSString * musicPath = [[NSBundle mainBundle] pathForResource:@"shortfile" ofType:@"m4a"];
     self.musicData = [NSData dataWithContentsOfFile:musicPath];
     _dataToSend = _musicData;
     [self sendData];
@@ -183,7 +182,6 @@
 }
 
 
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     // Don't keep it going while we're not showing.
@@ -191,6 +189,10 @@
 
     [super viewWillDisappear:animated];
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -239,9 +241,9 @@
     
     // Get the data
 //    self.dataToSend = [self.textView.text dataUsingEncoding:NSUTF8StringEncoding];
-    self.dataToSend = self.musicData;
+//    self.dataToSend = self.musicData;
     // Reset the index
-    self.sendDataIndex = 0;
+//    self.sendDataIndex = 0;
     
     // Start sending
 //    [self sendData];
@@ -342,7 +344,7 @@
             
             return;
         }
-    }
+    } //end of while
 }
 
 
@@ -352,10 +354,12 @@
 - (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral
 {
     // Start sending again
+    NSLog(@"Sending the next chunk");
     [self sendData];
 }
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - TextView Methods
 

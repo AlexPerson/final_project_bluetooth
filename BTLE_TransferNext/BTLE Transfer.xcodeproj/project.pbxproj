@@ -11,6 +11,7 @@
 		001597811BECC2F800DB4587 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F9161B15D5806400B3B398 /* Foundation.framework */; };
 		001597831BECC52A00DB4587 /* SoManyTimes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 001597821BECC52A00DB4587 /* SoManyTimes.mp3 */; };
 		00E6CB841BECE7E500BD47C4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */; };
+		3D3C91351BF26316008D0F69 /* shortfile.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C91331BF262FF008D0F69 /* shortfile.m4a */; };
 		B920C5DD15FAB25400A2DAC6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */; };
 		B92B557315E453690036A8A2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557215E453690036A8A2 /* Icon-57.png */; };
 		B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = B92B557415E4536C0036A8A2 /* Icon-114.png */; };
@@ -35,6 +36,7 @@
 		0015977F1BECBFD400DB4587 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		001597821BECC52A00DB4587 /* SoManyTimes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SoManyTimes.mp3; sourceTree = "<group>"; };
 		00E6CB831BECE7E500BD47C4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		3D3C91331BF262FF008D0F69 /* shortfile.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = shortfile.m4a; sourceTree = "<group>"; };
 		B920C5DC15FAB25400A2DAC6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		B92B557215E453690036A8A2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-57.png"; path = "../Icon-57.png"; sourceTree = "<group>"; };
 		B92B557415E4536C0036A8A2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-114.png"; path = "../Icon-114.png"; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				B9F9163115D5806500B3B398 /* MainStoryboard_iPhone.storyboard */,
 				B9F9163415D5806500B3B398 /* MainStoryboard_iPad.storyboard */,
 				B9F9163715D5806500B3B398 /* ViewController.h */,
+				3D3C91331BF262FF008D0F69 /* shortfile.m4a */,
 				B9F9163815D5806500B3B398 /* ViewController.m */,
 				001597821BECC52A00DB4587 /* SoManyTimes.mp3 */,
 				B9F9163F15D5808200B3B398 /* BTLECentralViewController.h */,
@@ -183,7 +186,7 @@
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					B9F9161415D5806400B3B398 = {
-						DevelopmentTeam = 86KZ389579;
+						DevelopmentTeam = 858GSPC73G;
 					};
 				};
 			};
@@ -214,6 +217,7 @@
 				B9F9163615D5806500B3B398 /* MainStoryboard_iPad.storyboard in Resources */,
 				B92B557315E453690036A8A2 /* Icon-57.png in Resources */,
 				001597831BECC52A00DB4587 /* SoManyTimes.mp3 in Resources */,
+				3D3C91351BF26316008D0F69 /* shortfile.m4a in Resources */,
 				B92B557515E4536C0036A8A2 /* Icon-114.png in Resources */,
 				B92B557715E4541E0036A8A2 /* Icon-72.png in Resources */,
 				B92B557915E4545B0036A8A2 /* Icon-144.png in Resources */,
@@ -330,7 +334,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTLE Transfer/BTLE Transfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/BTLE Transfer/BTLE Transfer-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.blue-buddies.nexttest";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.blue-budiooioidies.nexttest";
 				PRODUCT_NAME = "BTLE Transfer";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -348,7 +352,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTLE Transfer/BTLE Transfer-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/BTLE Transfer/BTLE Transfer-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.blue-buddies.nexttest";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.blue-budiooioidies.nexttest";
 				PRODUCT_NAME = "BTLE Transfer";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
